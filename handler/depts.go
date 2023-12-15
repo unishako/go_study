@@ -5,6 +5,8 @@ import (
 	"go.uber.org/zap"
 )
 
+var instance DeptsHandler
+
 type DeptsHandler interface {
 	List(context *gin.Context)
 }
@@ -14,9 +16,13 @@ type deptsHandler struct {
 }
 
 func NewDeptsHandler(msg string) DeptsHandler {
-	return deptsHandler{
-		message: msg,
+	// シングルトン対応（ここまでやるの？）
+	if instance == nil {
+		instance = deptsHandler{
+			message: msg,
+		}
 	}
+	return instance
 }
 
 func (handler deptsHandler) List(context *gin.Context) {
