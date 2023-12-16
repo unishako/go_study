@@ -24,8 +24,9 @@ func main() {
 	// ルーターの設定（router.goにした方がよい）
 	deptsHandler := Initialize("通りました")
 
-	v1 := engine.Group("v1")
-	v1.GET("/depts", deptsHandler.List)
+	v1 := engine.Group("/v1")
+	depts := v1.Group("/depts")
+	depts.GET("/emps", deptsHandler.List)
 	if err := engine.Run(); err != nil {
 		logger.Fatal("サーバが起動しませんでした。", zap.Error(err))
 	}
